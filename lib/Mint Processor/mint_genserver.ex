@@ -13,7 +13,7 @@ defmodule MintProcessor.MintGenServer do
       mint_blockchain: %BlockChain.Chain{latest_block_number: 0, block_map: %{}}
     }
 
-    GenServer.start_link(__MODULE__, mint_state)
+    GenServer.start_link(__MODULE__, mint_state, name: :mint_processor)
   end
 
   def init(mint_state) do
@@ -197,7 +197,7 @@ defmodule MintProcessor.MintGenServer do
   defp remove_from_unused(input, unused_map, tx_map) do
     [first | rest] = input
     unused_map = unused_map |> Map.delete(first.txid)
-    tx_map = tx_map |> Map.delete(first.txid)
+#    tx_map = tx_map |> Map.delete(first.txid)
     remove_from_unused(rest, unused_map, tx_map)
   end
 
@@ -539,4 +539,32 @@ defmodule MintProcessor.MintGenServer do
   def handle_call({:get_blockchain}, _from, mint_state) do
     {:reply, mint_state.mint_blockchain, mint_state}
   end
+
+  def handle_call(:get_last_five_blocks, _from, state) do
+    block_num = state.mint_blockchain.latest_block_number
+    {:reply, get_blocks(state.mint_blockchain.block_map, block_num, 5), state}
+  end
+
+  def handle_call({:get_block, block_num}, _from, state) do
+    bn = Map.get(state.mint_blockchain.block_map, block_num)
+    {:reply, bn, state}
+  end
+
+  def handle_call({:get_transaction, txn_hash}, _from, state) do
+    {:reply, state.mint_tx_map.get(txn_hash), state}
+  end
+
+
+
+  defp get_blocks(_chain, _block_num, count) when count == 0 do
+    []
+  end
+
+  defp get_blocks(chain, block_num, count) do
+    [chain.get(block_num) | get_blocks(chain, block_num-1, count-1)]
+  end
+
+  
+
+
 end

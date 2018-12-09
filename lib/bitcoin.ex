@@ -52,33 +52,10 @@ defmodule Bitcoin do
   end
 
   def inin() do
-    MintProcessor.MintSupervisor.start_link(nil)
     {_, mint_pid} = MintProcessor.MintSupervisor.start_child()
-    User.BitcoinSupervisor.start_link(nil)
-    User.BitcoinSupervisor.start_child(15, mint_pid, 15, %{})
+    User.BitcoinSupervisor.start_child(3, mint_pid, 3, %{})
     spec_list = DynamicSupervisor.which_children(:user_super)
-    IO.inspect(spec_list)
     start_node_mining(spec_list, mint_pid)
-    wait_indef()
-    GenServer.call(mint_pid, {:print_bro}) |> IO.inspect(limit: :infinity)
-    child_pid = User.BitcoinSupervisor.add_new_node(mint_pid)
-
-    keep_requesting(child_pid, 5, spec_list)
-    wait_indef2()
-
-    GenServer.call(child_pid,{:print_wallet}) |> IO.inspect(limit: :infinity)
-    GenServer.call(mint_pid, {:print_bro}) |> IO.inspect(limit: :infinity)
-    keep_requesting(child_pid, 5, spec_list)
-    wait_indef2()
-    GenServer.call(child_pid,{:print_wallet}) |> IO.inspect(limit: :infinity)
-    GenServer.call(mint_pid, {:print_bro}) |> IO.inspect(limit: :infinity)
-    keep_requesting(child_pid, 5, spec_list)
-    wait_indef2()
-    GenServer.call(child_pid,{:print_wallet}) |> IO.inspect(limit: :infinity)
-    GenServer.call(mint_pid, {:print_bro}) |> IO.inspect(limit: :infinity)
-    GenServer.call(child_pid,{:print_wallet}) |> IO.inspect(limit: :infinity)
-    keep_requesting(child_pid, 5, spec_list)
-    wait_indef3()
 
   end
 end

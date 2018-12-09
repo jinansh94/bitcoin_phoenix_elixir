@@ -17,6 +17,8 @@ defmodule BitcoinPhoenixElixirWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    get "/block", PageController, :block
   end
 
   # Other scopes may use custom stacks.
