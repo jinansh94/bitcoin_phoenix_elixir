@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Block Search</title>
+	<meta charset="UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="<%= Routes.static_path(@conn, "/images/images/icons/favicon.ico") %>"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendor/bootstrap/css/bootstrap.min.css") %>"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/fonts/font-awesome-4.7.0/css/font-awesome.min.css") %>"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendor/animate/animate.css") %>"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendor/select2/select2.min.css") %>"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendor/perfect-scrollbar/perfect-scrollbar.css") %>"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/css/util.css") %>"/>
+	<link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/css/main.css") %>"/>
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <section style="padding-top: 100px;">
+
+       <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <button id="block_search_btn" class="btn btn-outline-secondary" type="button">Button</button>
+  </div>
+  <input id="block_search_input" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+</div>
+            <script>
+                var url_block_number = document.getElementById("block_search_input");
+                document.getElementById("block_search_btn").onclick = function () {
+                    location.href = `http://localhost:4000/block?block=${url_block_number}`;
+                };
+            </script>  
+
+      </section>  
+   
+	
+
+	
+            <section style="padding-top: 100px;">
+		
+				<div class="table100 ver1 m-b-110">
+					<table data-vertable="ver1">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column2" data-column="column2">Height</th>
+								<th class="column100 column3" data-column="column3">Age</th>
+								<th class="column100 column4" data-column="column4">Transactions</th>
+								<th class="column100 column5" data-column="column5">Miner</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Lawrence Scott</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Jane Medina</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Billy Mitchell</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Beverly Reid</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Tiffany Wade</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Sean Adams</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Rachel Simpson</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Mark Salazar</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		
+	</section>
+	
+
+   
+
+
+<!--===============================================================================================-->	
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/css/vendor/jquery/jquery-3.2.1.min.js") %>"></script>
+<!--===============================================================================================-->
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/css/vendor/bootstrap/js/popper.js") %>"></script>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/css/vendor/bootstrap/js/bootstrap.min.js") %>"></script>
+<!--===============================================================================================-->
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/css/vendor/select2/select2.min.js") %>"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/js/main.js") %>"></script>
+
+</body>
+</html>
