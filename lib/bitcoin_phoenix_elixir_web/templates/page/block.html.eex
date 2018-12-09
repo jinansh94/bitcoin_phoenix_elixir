@@ -1,0 +1,9 @@
+<section class="phx-hero">
+  <h1>
+        <%= b = @conn.params["block"]
+            block_number = get_block_number(b)
+            "Block#" <> Integer.to_string(block_number)
+        %>
+    </h1>
+  
+</section>

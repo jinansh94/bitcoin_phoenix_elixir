@@ -30,6 +30,15 @@
       <li>
         <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
       </li>
+      <li>
+        <%= b = @conn.params["block"]
+            if(b == nil) do
+             "hello"
+            else
+             b
+            end
+        %>
+      </li>
     </ul>
   </article>
 </section>

@@ -19,6 +19,9 @@ defmodule BitcoinPhoenixElixirWeb.Router do
     get "/", PageController, :index
 
     get "/blocksearch", BlocksearchController, :index
+
+    get "/block", PageController, :block
+
   end
 
   # Other scopes may use custom stacks.

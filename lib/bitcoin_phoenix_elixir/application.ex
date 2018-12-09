@@ -11,15 +11,20 @@ defmodule BitcoinPhoenixElixir.Application do
       # Start the Ecto repository
       BitcoinPhoenixElixir.Repo,
       # Start the endpoint when the application starts
-      BitcoinPhoenixElixirWeb.Endpoint
+      BitcoinPhoenixElixirWeb.Endpoint,
       # Starts a worker by calling: BitcoinPhoenixElixir.Worker.start_link(arg)
       # {BitcoinPhoenixElixir.Worker, arg},
+      %{id: :mint_super, restart: :temporary, start: {MintProcessor.MintSupervisor, :start_link, [nil]}},
+      %{id: :user_super, restart: :temporary, start: {User.BitcoinSupervisor, :start_link, [nil]}}
+      
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: BitcoinPhoenixElixir.Supervisor]
-    Supervisor.start_link(children, opts)
+    x = Supervisor.start_link(children, opts)
+    Bitcoin.inin()
+    x
   end
 
   # Tell Phoenix to update the endpoint configuration
