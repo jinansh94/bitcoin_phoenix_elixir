@@ -69,7 +69,7 @@ config :phoenix, :plug_init_mode, :runtime
 # Configure your database
 config :bitcoin_phoenix_elixir, BitcoinPhoenixElixir.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "India_123",
   database: "bitcoin_phoenix_elixir_dev",
   hostname: "localhost",
   pool_size: 10
