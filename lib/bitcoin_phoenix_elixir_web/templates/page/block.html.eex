@@ -84,7 +84,7 @@
         table += '<td>Input transactions    </td>';
         table += '</tr>';
 
-        table += `<%= raw(escape_javascript(get_transaction_html(@conn.params["block"])))%>`;
+        table += `<%= raw(javascript_escape(get_transaction_html(@conn.params["block"])))%>`;
   
         document.write('<table>' +table + '</table>')
     </script>

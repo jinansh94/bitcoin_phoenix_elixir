@@ -302,7 +302,7 @@ defmodule MintProcessor.MintGenServer do
         tenth_block = chain |> Map.get(:block_map) |> Map.get(block.block_number - 10)
 
         if(tenth_block == nil) do
-          {chain, new_tx_map, new_unused_map, unverified_map}
+          {chain, new_tx_map, new_unused_map, unverified_map, miners}
         else
           tenth_block = hd(tenth_block)
 
@@ -551,19 +551,18 @@ defmodule MintProcessor.MintGenServer do
   end
 
   def handle_call({:get_block, block_num}, _from, state) do
+
     bn = Map.get(state.mint_blockchain.block_map, block_num)
     {:reply, bn, state}
   end
 
   def handle_call({:get_transaction, txid}, _from, state) do
-    IO.puts("Hello")
-    IO.inspect(txid)
     txn = Map.get(state.mint_tx_map,txid)
     type =
     cond do
       txn == nil -> :not_found
-      txid in state.unverified_transaction -> :unverified
-      txid in state.unused_transaction -> :unused
+      txid in Map.keys(state.unverified_transaction) -> :unverified
+      txid in Map.keys(state.unused_transaction) -> :unused
       true -> :spent
 
     end

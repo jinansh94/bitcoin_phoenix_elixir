@@ -12,6 +12,12 @@
         </tr>
         <tr>
             <td> Input Transactions </td>
+            <td>
+    <script> 
+        var table = `<%= raw(javascript_escape(get_input_transaction_html(@conn.params["transaction"])))%>`;
+        document.write(table)
+    </script>
+            </td>
         </tr>
         <tr>
             <td> Sender Public Key </td>
@@ -38,9 +44,10 @@
             <td style="font">  
                 <%= t = @conn.params["type"]
                     cond do
-                        t == :unspent -> "Transaction verified, but unspent"
+                        t == :unused -> "Transaction verified, but unspent"
                         t == :unverified -> "Transaction yet to be verified"
                         t == :spent -> "Transaction spent"
+                        true -> "Something wrong"
                     end
                 %>
         </td>
