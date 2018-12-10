@@ -4,7 +4,7 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
 
 
   def get_block_number(block) do
-    Map.get(block, :block_number)  
+    Map.get(block, :block_number)
   end
 
   def get_transaction_count(block) do
@@ -19,20 +19,20 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
     hh =  Integer.to_string(hh)
     mm =  Integer.to_string(mm)
     ss =  Integer.to_string(ss)
-    y <> "-" <> m <> "-" <> d <> ";" <> hh <> ":" <> mm <> ":" <> ss  
+    y <> "-" <> m <> "-" <> d <> ";" <> hh <> ":" <> mm <> ":" <> ss
   end
 
   def get_nonce(block) do
-    block |> Map.get(:block_header) |> Map.get(:nonce) 
-    
+    block |> Map.get(:block_header) |> Map.get(:nonce)
+
   end
-  
+
   def get_block_reward(block) do
     block |> Map.get(:transactions) |> hd() |> Map.get(:transaction_output) |> Map.get(:amount)
   end
 
   def get_block_hash(block) do
-    block |> Map.get(:block_header) |> Map.get(:block_hash) |> Base.encode16() 
+    block |> Map.get(:block_header) |> Map.get(:block_hash) |> Base.encode16()
   end
 
   def get_prev_block_hash(block) do
@@ -40,7 +40,7 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
   end
 
   def get_merkle_root(block) do
-    block |> Map.get(:block_header) |> Map.get(:merkle_root) |> Base.encode16() 
+    block |> Map.get(:block_header) |> Map.get(:merkle_root) |> Base.encode16()
   end
 
   def get_transactions_html_string(transactions) when transactions == [] do
@@ -57,6 +57,10 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
     string = get_transactions_html_string(block.transactions)
     IO.puts string
     string
+  end
+
+  def get_rows(block) do
+    :erlang.length(block.transactions)
   end
 
 end

@@ -70,14 +70,45 @@
         </tr>
     </table>
     <h3> Transactions </h3>
-    <table> 
+
     <script> 
-        var htmlString = <%= b = @conn.params["block"]
-                    get_transactions_html_string_from_block(b)
-                %>;
-        Console.log(htmlString);
-        return htmlString;
+        var table ='';
+        var rows = <%=get_rows(@conn.params["block"])%>;
+        console.log(`rows ${rows}`)
+        var cols = 3;
+        for(var r =0; r<=rows; r++){
+            table += '<tr>';
+            for(var c=0; c < cols; c++){
+                table += '<td>' 
+                if(r ===0) {
+                    if(c===0){
+                        table += 'Transaction Id    ';
+                    }
+                    else if(c===1){
+                        table += 'Amount    ';
+                    }
+                    else if(c===2){
+                        table += 'Input transactions';
+                    }    
+                }
+                else if(r===1) {
+                    if(c===0){
+                        var temp = <%= get_transaction_id(@conn.params["block"],1)%>
+                        table += `${temp} + hello`;
+                    }
+                    else if(c===1){
+                        table += 'Amount    ';
+                    }
+                    else if(c===2){
+                        table += 'Input transactions';
+                    }    
+                }
+                table +='</td';
+            }
+            table += '</tr>';
+        }
+        document.write('<table>' +table + '</table>')
     </script>
-    </table>
+   
 
 </section>
