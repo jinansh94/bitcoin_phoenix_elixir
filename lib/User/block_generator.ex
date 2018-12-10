@@ -149,7 +149,7 @@ defmodule User.BlockGenerator do
     }
 
     block = generate_hash(block, nonce, condition_number)
-    diff = block.nonce - nonce 
+    diff = block.block_header.nonce - nonce 
     block = Map.put(block, :complexity, diff)
     GenServer.cast(success_pid, {:you_found_a_new_block, block, input_txns, m_pid})
     block
