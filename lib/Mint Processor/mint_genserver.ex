@@ -557,10 +557,7 @@ defmodule MintProcessor.MintGenServer do
   end
 
   def handle_call({:get_transaction, txid}, _from, state) do
-    IO.puts("Hello")
-    IO.inspect(txid)
     txn = Map.get(state.mint_tx_map,txid)
-    IO.inspect(state.unused_transaction, limit: :infinity)
     type =
     cond do
       txn == nil -> :not_found

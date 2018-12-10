@@ -12,6 +12,12 @@
         </tr>
         <tr>
             <td> Input Transactions </td>
+            <td>
+    <script> 
+        var table = `<%= raw(javascript_escape(get_input_transaction_html(@conn.params["transaction"])))%>`;
+        document.write(table)
+    </script>
+            </td>
         </tr>
         <tr>
             <td> Sender Public Key </td>

@@ -97,7 +97,7 @@ defmodule User.BitcoinUser do
     transaction = transaction |> Map.put(:signature, signature)
     transaction
   end
-
+"""
   defp check_unspent(txids, _mint_pid) when txids == [] do
     true
   end
@@ -114,7 +114,7 @@ defmodule User.BitcoinUser do
       false
     end
   end
-
+"""
   def check_authenticity_of_txn(transaction) do
     sign = transaction.signature
     transaction = transaction |> Map.put(:signature, nil)
@@ -422,7 +422,7 @@ defmodule User.BitcoinUser do
 
           GenServer.cast(
             Map.get(state.wallet.pubkey_hashes, id).user_pid,
-            {:you_received_bitcoin, transaction.txid, amount}
+            {:you_received_bitcoin, transaction, amount}
           )
 
           broadcast_transaction(transaction, state.neighbors)
@@ -438,7 +438,7 @@ defmodule User.BitcoinUser do
   def handle_cast({:you_received_bitcoin, txid, amount}, state) do
     new_wallet =
       state.wallet
-      |> Map.update(:unused_transactions, [], &[txid | &1])
+      |> Map.update(:unused_transactions, [txid], &[txid | &1])
       |> Map.update(:balance, 0, &(&1 + amount))
 
     #    IO.puts("#{state.id} got money. new balance #{new_wallet.balance}")
@@ -643,11 +643,11 @@ defmodule User.BitcoinUser do
         GenServer.cast(state.wallet.mint_master_pid, {:block_generated, block})
         count = Enum.count(block.transactions)
 
-        # IO.puts(
-        #   "#{state.id} generated a new block with block number #{block.block_number} with #{count} transactions and has #{
-        #     Enum.count(updated_txns)
-        #   } transactions left out of #{before_updating}"
-        # )
+         IO.puts(
+           "#{state.id} generated a new block with block number #{
+             block.block_number} with #{count} transactions and has #{
+              Enum.count(updated_txns)} transactions left out of #{before_updating}"
+         )
 
         #        IO.inspect(block.block_header.block_hash)
         new_wallet = state.wallet

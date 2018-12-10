@@ -111,8 +111,9 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
 
   def get_input_transaction_list(transaction_input) do
     [head | tail] = transaction_input
-    temp = head.txid |> Base.encode16(case: :lower) |> String.slice(0..30)
-    temp <> "<br>" <> get_input_transaction_list(tail)
+    temp = head.txid |> Base.encode16(case: :lower)
+    "<a href =\"http://localhost:4000/transaction?transaction=" <> temp <> "\">" <> (temp |> String.slice(0..30)) <>"...</a>" <>
+    "<br>" <> get_input_transaction_list(tail)
   end
 
   def generate_transaction_html(transactions) when transactions == [] do
@@ -139,6 +140,10 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
   def get_prev_block_link(block) do
     block_no = Map.get(block, :block_number)
     "http://localhost:4000/block?block=" <> Integer.to_string((block_no-1))
+  end
+
+  def get_input_transaction_html(transaction) do
+    get_input_transaction_list(transaction.transaction_input)
   end
 
 
