@@ -4,17 +4,4 @@
   </p>
 </section>
 
-<canvas id="lineChart" height="400" width="400"></canvas>
-<script> 
-const CHART = document.getElementById("lineChart");
-let myLineChart = new Chart(CHART, {
-  type: 'line',
-  data: {
-    labels: [],
-    datasets: [
-      {
-        label: "Unspent Transactions"
-      }
-    ]
-});
-</script>
+

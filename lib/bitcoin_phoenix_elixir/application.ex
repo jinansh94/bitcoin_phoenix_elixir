@@ -16,7 +16,7 @@ defmodule BitcoinPhoenixElixir.Application do
       # {BitcoinPhoenixElixir.Worker, arg},
       %{id: :mint_super, restart: :temporary, start: {MintProcessor.MintSupervisor, :start_link, [nil]}},
       %{id: :user_super, restart: :temporary, start: {User.BitcoinSupervisor, :start_link, [nil]}}
-      
+      #%{id: :db_loader, restart: :permanent, start: {BitcoinPhoenixElixir.DBLoader, :insertIntoDb, []}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
