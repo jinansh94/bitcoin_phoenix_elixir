@@ -10,7 +10,8 @@ defmodule MintProcessor.MintGenServer do
       unverified_transaction: uv_tx,
       unused_transaction: us_tx,
       mint_tx_map: tx_map,
-      mint_blockchain: %BlockChain.Chain{latest_block_number: 0, block_map: %{}}
+      mint_blockchain: %BlockChain.Chain{latest_block_number: 0, block_map: %{}},
+      miners: %{}
     }
 
     GenServer.start_link(__MODULE__, mint_state, name: :mint_processor)
@@ -254,7 +255,7 @@ defmodule MintProcessor.MintGenServer do
     lock_transactions(rest, unused_map)
   end
 
-  defp add_block_to_chain(chain, block, tx_map, unused_map, unverified_map) do
+  defp add_block_to_chain(chain, block, tx_map, unused_map, unverified_map, miners) do
     #    IO.puts("bn #{block.block_number}, cn #{chain.latest_block_number}")
 
     cond do
@@ -268,7 +269,7 @@ defmodule MintProcessor.MintGenServer do
 
         new_unused_map = lock_transactions(tl(block.transactions), unused_map)
 
-        {chain, tx_map, new_unused_map, unverified_map}
+        {chain, tx_map, new_unused_map, unverified_map, miners}
 
       block.block_number < chain.latest_block_number - 5 ->
         {chain, tx_map, unused_map, unverified_map}
@@ -279,7 +280,7 @@ defmodule MintProcessor.MintGenServer do
    #     IO.puts("branching happened")
         # IO.inspect(Map.get(chain.block_map, block.block_number))
         new_unused_map = lock_transactions(tl(block.transactions), unused_map)
-        {chain, tx_map, new_unused_map, unverified_map}
+        {chain, tx_map, new_unused_map, unverified_map, miners}
 
       block.block_number == chain.latest_block_number + 1 ->
         #        unused_map |> Map.keys() |> Enum.count() |> IO.puts()
@@ -324,6 +325,8 @@ defmodule MintProcessor.MintGenServer do
           new_tx_map =
             new_tx_map |> Map.put(hd(tenth_block.transactions).txid, hd(tenth_block.transactions))
 
+          new_miners = miners |> Map.update(tenth_block.miner, 1, &(&1 + 1))
+
           #          new_unused_map |> Map.keys() |> Enum.count() |> IO.puts()
           #         new_tx_map |> Map.keys() |> Enum.count() |> IO.puts()
           #        chain.block_map |> Map.keys() |> Enum.count() |> IO.puts()
@@ -331,7 +334,7 @@ defmodule MintProcessor.MintGenServer do
           #        IO.inspect(new_tx_map)
           #        IO.inspect(new_unused_map)
 
-          {chain, new_tx_map, new_unused_map, new_uv_map}
+          {chain, new_tx_map, new_unused_map, new_uv_map, new_miners}
         end
 
       true ->
@@ -485,20 +488,21 @@ defmodule MintProcessor.MintGenServer do
           block
         )
 
-      {new_block_chain, new_tx_map, new_unused, new_unverified} =
+      {new_block_chain, new_tx_map, new_unused, new_unverified, new_miners} =
         if(valid == :valid) do
           add_block_to_chain(
             mint_state.mint_blockchain,
             block,
             mint_state.mint_tx_map,
             mint_state.unused_transaction,
-            mint_state.unverified_transaction
+            mint_state.unverified_transaction,
+            mint_state.miners
           )
         else
     #      IO.puts("invalid block")
 
           {mint_state.mint_blockchain, mint_state.mint_tx_map, mint_state.unused_transaction,
-           mint_state.unverified_transaction}
+           mint_state.unverified_transaction, mint_state.miners}
         end
 
       mint_state =
@@ -507,6 +511,7 @@ defmodule MintProcessor.MintGenServer do
         |> Map.put(:mint_tx_map, new_tx_map)
         |> Map.put(:unused_transaction, new_unused)
         |> Map.put(:unverified_transaction, new_unverified)
+        |> Map.put(:miners, new_miners)
 
       #    IO.inspect(mint_state.unused_transaction)
       #    IO.inspect(mint_state.mint_tx_map)
@@ -566,6 +571,28 @@ defmodule MintProcessor.MintGenServer do
     {:reply, {type, txn}, state}
   end
 
+  def handle_call(:get_unspent_transaction_count, _from, state) do
+    {:reply, length(state.unused_transaction), state}
+  end
+
+  def handle_call(:get_unverified_transaction_count, _from, state) do
+    {:reply, length(state.unverified_transaction), state}
+  end
+
+  def handle_call(:get_total_transaction_count, _from, state) do
+    {:reply, state.mint_tx_map |> Map.keys() |> length(), state}
+  end
+
+  def handle_call(:get_top_ten_miners, _from, state) do
+    k = state.miners |> Map.keys()
+    v = state.miners |> Map.values()
+    top_ten = Enum.zip(k,v) |> Enum.sort(fn {_k1,v1}, {_k2,v2} -> v1 > v2 end) |> Enum.take(10)
+    {:reply, top_ten, state}
+  end
+
+  def handle_call(:number_of_bitcoins, _from, state) do
+    {:reply, state.mint_blockchain.latest_block_number * 50, state}
+  end
 
 
   defp get_blocks(_chain, _block_num, count) when count == 0 do

@@ -3,6 +3,7 @@ defmodule MintProcessor.Structure do
     :unverified_transaction,
     :unused_transaction,
     :mint_blockchain,
-    :mint_tx_map
+    :mint_tx_map,
+    :miners
   ]
 end
