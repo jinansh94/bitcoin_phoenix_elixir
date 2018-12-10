@@ -99,6 +99,7 @@ defmodule User.BlockGenerator do
   end
 
   def generate_next_block(
+        miner_id,
         block_number,
         transactions,
         coinbase_amount,
@@ -139,13 +140,17 @@ defmodule User.BlockGenerator do
       timestamp: :calendar.datetime_to_gregorian_seconds(:calendar.universal_time())
     }
 
+    nonce = :rand.uniform(1_000_000_000)
     block = %BlockChain.Block{
       block_number: block_number,
       block_header: header,
-      transactions: transactions
+      transactions: transactions,
+      miner: miner_id
     }
 
-    block = generate_hash(block, :rand.uniform(1_000_000_000), condition_number)
+    block = generate_hash(block, nonce, condition_number)
+    diff = block.nonce - nonce 
+    block = Map.put(block, :complexity, diff)
     GenServer.cast(success_pid, {:you_found_a_new_block, block, input_txns, m_pid})
     block
   end
