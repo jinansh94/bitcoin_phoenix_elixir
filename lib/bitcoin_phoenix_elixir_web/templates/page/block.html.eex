@@ -1,9 +1,83 @@
-<section class="phx-hero">
-  <h1>
+<section >
+    <h1>
         <%= b = @conn.params["block"]
             block_number = get_block_number(b)
             "Block#" <> Integer.to_string(block_number)
         %>
     </h1>
-  
+    <table style="width:100% align:left">
+        <tr>
+            <th> Summary </th>
+        </tr>
+        <tr>
+            <td> Number of Transactions </td>
+            <td> 
+                <%= b = @conn.params["block"]
+                    val = get_transaction_count(b)
+                    Integer.to_string(val)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Timestamp </td>
+            <td> 
+                <%= b = @conn.params["block"]
+                    get_timestamp(b)
+                %>
+         </td>
+        </tr>
+        <tr>
+            <td> Nonce </td>
+            <td>  
+                <%= b = @conn.params["block"]
+                    val = get_nonce(b)
+                    Integer.to_string(val)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Block reward </td>
+            <td>  
+                <%= b = @conn.params["block"]
+                    val = get_block_reward(b)
+                    Integer.to_string(val)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Hash </td>
+            <td style="font">  
+                <%= b = @conn.params["block"]
+                    get_block_hash(b)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Previous Block Hash </td>
+            <td>  
+                <%= b = @conn.params["block"]
+                    get_prev_block_hash(b)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Merkle Root </td>
+            <td>  
+                <%= b = @conn.params["block"]
+                    get_merkle_root(b)
+                %>
+        </td>
+        </tr>
+    </table>
+    <h3> Transactions </h3>
+    <table> 
+    <script> 
+        var htmlString = <%= b = @conn.params["block"]
+                    get_transactions_html_string_from_block(b)
+                %>;
+        Console.log(htmlString);
+        return htmlString;
+    </script>
+    </table>
+
 </section>
