@@ -561,10 +561,10 @@ defmodule MintProcessor.MintGenServer do
   end
 
   defp get_blocks(chain, block_num, count) do
-    [chain.get(block_num) | get_blocks(chain, block_num-1, count-1)]
+    [Map.get(chain,block_num) | get_blocks(chain, block_num-1, count-1)]
   end
 
-  
+
 
 
 end

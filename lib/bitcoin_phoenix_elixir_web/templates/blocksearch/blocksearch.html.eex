@@ -27,44 +27,39 @@
 <body>
 
     <section style="padding-top: 100px;">
-
-       <div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <button id="block_search_btn" class="btn btn-outline-secondary" type="button">Button</button>
-  </div>
-  <input id="block_search_input" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
-</div>
-            <script>
-                var url_block_number = document.getElementById("block_search_input");
-                document.getElementById("block_search_btn").onclick = function () {
-                    location.href = `http://localhost:4000/block?block=${url_block_number}`;
-                };
-            </script>  
-
-      </section>  
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button id="block_search_btn" class="btn btn-outline-secondary" type="button">Button</button>
+            </div>
+            <input id="block_search_input" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+        </div>
+        <script>
+            document.getElementById("block_search_btn").onclick = function () {
+            var url_block_number = document.getElementById("block_search_input").value;
+            console.log(`BLock_number ${url_block_number}`);
+            location.href = `http://localhost:4000/block?block=${url_block_number}`;
+            };
+        </script>  
+    </section>  
    
-	
-
-	
-            <section style="padding-top: 100px;">
-		
-				<div class="table100 ver1 m-b-110">
-					<table data-vertable="ver1">
-						<thead>
-							<tr class="row100 head">
-								<th class="column100 column2" data-column="column2">Height</th>
-								<th class="column100 column3" data-column="column3">Age</th>
-								<th class="column100 column4" data-column="column4">Transactions</th>
-								<th class="column100 column5" data-column="column5">Miner</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Lawrence Scott</td>
-								<td class="column100 column2" data-column="column2">8:00 AM</td>
-								<td class="column100 column3" data-column="column3">--</td>
-								<td class="column100 column4" data-column="column4">--</td>
-							</tr>
+    <section style="padding-top: 100px;">
+        <div class="table100 ver1 m-b-110">
+			<table data-vertable="ver1">
+				<thead>
+					<tr class="row100 head">
+						<th class="column100 column2" data-column="column2">Height</th>
+						<th class="column100 column3" data-column="column3">Age</th>
+						<th class="column100 column4" data-column="column4">Transactions</th>
+						<th class="column100 column5" data-column="column5">Miner</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="row100">
+						<td class="column100 column1" data-column="column1">block_height(@conn.params["block"])</td>
+						<td class="column100 column2" data-column="column2">8:00 AM</td>
+						<td class="column100 column3" data-column="column3">--</td>
+						<td class="column100 column4" data-column="column4">--</td>
+					</tr>
 
 							<tr class="row100">
 								<td class="column100 column1" data-column="column1">Jane Medina</td>
