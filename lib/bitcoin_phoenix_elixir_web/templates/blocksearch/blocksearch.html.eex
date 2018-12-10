@@ -26,7 +26,7 @@
 </head>
 <body>
 
-    <section style="padding-top: 100px;">
+    <section style="padding-top: 50px;padding-bottom: 50px">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <button id="block_search_btn" class="btn btn-outline-secondary" type="button">Button</button>
@@ -41,78 +41,55 @@
             };
         </script>  
     </section>  
+
+	<div>
+	<h1> Latest Transactions: </h1>
+	</div>
    
-    <section style="padding-top: 100px;">
+    <section style="padding-top: 20px;">
         <div class="table100 ver1 m-b-110">
 			<table data-vertable="ver1">
 				<thead>
 					<tr class="row100 head">
 						<th class="column100 column2" data-column="column2">Height</th>
-						<th class="column100 column3" data-column="column3">Age</th>
+						<th class="column100 column3" data-column="column3">Birth</th>
 						<th class="column100 column4" data-column="column4">Transactions</th>
-						<th class="column100 column5" data-column="column5">Miner</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="row100">
-						<td class="column100 column1" data-column="column1">block_height(@conn.params["block"])</td>
-						<td class="column100 column2" data-column="column2">8:00 AM</td>
-						<td class="column100 column3" data-column="column3">--</td>
-						<td class="column100 column4" data-column="column4">--</td>
+						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_1"])%></td>
+						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_1"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
 					</tr>
 
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Jane Medina</td>
-								<td class="column100 column2" data-column="column2">--</td>
-								<td class="column100 column3" data-column="column3">5:00 PM</td>
-								<td class="column100 column4" data-column="column4">5:00 PM</td>
-							</tr>
+					<tr class="row100">
+						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_2"])%></td>
+						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_2"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+					</tr>
 
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Billy Mitchell</td>
-								<td class="column100 column2" data-column="column2">9:00 AM</td>
-								<td class="column100 column3" data-column="column3">--</td>
-								<td class="column100 column4" data-column="column4">--</td>
-							</tr>
+					<tr class="row100">
+						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_3"])%></td>
+						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_3"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+					</tr>
 
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Beverly Reid</td>
-								<td class="column100 column2" data-column="column2">--</td>
-								<td class="column100 column3" data-column="column3">5:00 PM</td>
-								<td class="column100 column4" data-column="column4">5:00 PM</td>
-							</tr>
+					<tr class="row100">
+						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_4"])%></td>
+						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_4"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+					</tr>
 
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Tiffany Wade</td>
-								<td class="column100 column2" data-column="column2">8:00 AM</td>
-								<td class="column100 column3" data-column="column3">--</td>
-								<td class="column100 column4" data-column="column4">--</td>
-							</tr>
+					<tr class="row100">
+						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_5"])%></td>
+						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_5"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+					</tr>
 
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Sean Adams</td>
-								<td class="column100 column2" data-column="column2">--</td>
-								<td class="column100 column3" data-column="column3">5:00 PM</td>
-								<td class="column100 column4" data-column="column4">5:00 PM</td>
-							</tr>
-
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Rachel Simpson</td>
-								<td class="column100 column2" data-column="column2">9:00 AM</td>
-								<td class="column100 column3" data-column="column3">--</td>
-								<td class="column100 column4" data-column="column4">--</td>
-							</tr>
-
-							<tr class="row100">
-								<td class="column100 column1" data-column="column1">Mark Salazar</td>
-								<td class="column100 column2" data-column="column2">8:00 AM</td>
-								<td class="column100 column3" data-column="column3">--</td>
-								<td class="column100 column4" data-column="column4">--</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-		
+				</tbody>
+			</table>
+		</div>
 	</section>
 	
 

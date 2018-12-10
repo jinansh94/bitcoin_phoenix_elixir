@@ -22,6 +22,8 @@ defmodule BitcoinPhoenixElixirWeb.Router do
 
     get "/block", PageController, :block
 
+    get "/transaction", PageController, :transaction
+
   end
 
   # Other scopes may use custom stacks.

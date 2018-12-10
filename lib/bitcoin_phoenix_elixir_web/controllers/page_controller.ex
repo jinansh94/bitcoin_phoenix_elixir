@@ -15,9 +15,22 @@ defmodule BitcoinPhoenixElixirWeb.PageController do
     else
         conn = Map.put(conn, :params, %{"block" => hd(b)})
         render(conn, "block.html")
-        
+
     end
-    
-    
   end
+
+  def transaction(conn, params) do
+    IO.inspect( Map.get(conn,:params))
+    transaction =  Map.get(conn,:params) |> Map.get("transaction")
+    {type, txn} = GenServer.call(:mint_processor, {:get_transaction, Base.decode16!(transaction , case: :lower)})
+    cond do
+      type == :not_found -> render(conn, "transaction_not_found.html")
+      true ->
+        conn = Map.put(conn, :params, %{"transaction" => txn, "type" => type})
+        render(conn, "transaction.html")
+    end
+
+  end
+
 end
+

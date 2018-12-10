@@ -1,11 +1,11 @@
-<section >
+<section style="align: left">
     <h1>
         <%= b = @conn.params["block"]
             block_number = get_block_number(b)
             "Block#" <> Integer.to_string(block_number)
         %>
     </h1>
-    <table style="width:100% align:left">
+    <table style="width: 100%">
         <tr>
             <th> Summary </th>
         </tr>
@@ -69,46 +69,23 @@
         </td>
         </tr>
     </table>
+    </section>
     <h3> Transactions </h3>
+
+    
 
     <script> 
         var table ='';
-        var rows = <%=get_rows(@conn.params["block"])%>;
-        console.log(`rows ${rows}`)
-        var cols = 3;
-        for(var r =0; r<=rows; r++){
-            table += '<tr>';
-            for(var c=0; c < cols; c++){
-                table += '<td>' 
-                if(r ===0) {
-                    if(c===0){
-                        table += 'Transaction Id    ';
-                    }
-                    else if(c===1){
-                        table += 'Amount    ';
-                    }
-                    else if(c===2){
-                        table += 'Input transactions';
-                    }    
-                }
-                else if(r===1) {
-                    if(c===0){
-                        var temp = <%= get_transaction_id(@conn.params["block"],1)%>
-                        table += `${temp} + hello`;
-                    }
-                    else if(c===1){
-                        table += 'Amount    ';
-                    }
-                    else if(c===2){
-                        table += 'Input transactions';
-                    }    
-                }
-                table +='</td';
-            }
-            table += '</tr>';
-        }
+
+        table += '<tr>';
+        table += '<td>Transaction Id   </td>';
+        table += '<td>Amount    </td>';
+        table += '<td>Input transactions    </td>';
+        table += '</tr>';
+
+        table += `<%= raw(escape_javascript(get_transaction_html(@conn.params["block"])))%>`;
+  
         document.write('<table>' +table + '</table>')
     </script>
    
 
-</section>
