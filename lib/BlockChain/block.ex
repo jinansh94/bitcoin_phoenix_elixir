@@ -16,7 +16,8 @@ defmodule BlockChain.Block do
     # stretch goal
     :added_transactions,
     # stretch goal
-    :other
+    :miner,
+    :complexity
   ]
 
   # TODO: discuss on how to process coinbase transactions.

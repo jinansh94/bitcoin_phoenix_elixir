@@ -36,7 +36,12 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
   end
 
   def get_prev_block_hash(block) do
-    block |> Map.get(:block_header) |> Map.get(:previous_block_hash) |> Base.encode16(case: :lower)
+    unless (block.block_header.previous_block_hash == nil) do
+      block |> Map.get(:block_header) |> Map.get(:previous_block_hash) |> Base.encode16(case: :lower)
+    else
+      ""  
+    end
+    
   end
 
   def get_merkle_root(block) do

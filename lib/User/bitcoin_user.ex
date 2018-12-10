@@ -507,6 +507,7 @@ defmodule User.BitcoinUser do
         User.BlockGenerator,
         :generate_next_block,
         [
+          state.id,
           state.block_chain.latest_block_number + 1,
           state.incoming_txns,
           50,
@@ -579,6 +580,7 @@ defmodule User.BitcoinUser do
                     User.BlockGenerator,
                     :generate_next_block,
                     [
+                      state.id,
                       block.block_number + 1,
                       state.incoming_txns,
                       50,
@@ -673,6 +675,7 @@ defmodule User.BitcoinUser do
         User.BlockGenerator,
         :generate_next_block,
         [
+          state.id,
           new_block_number,
           new_state.incoming_txns,
           50,
