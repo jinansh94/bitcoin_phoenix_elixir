@@ -32,15 +32,15 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
   end
 
   def get_block_hash(block) do
-    block |> Map.get(:block_header) |> Map.get(:block_hash) |> Base.encode16() 
+    block |> Map.get(:block_header) |> Map.get(:block_hash) |> Base.encode16(case: :lower) 
   end
 
   def get_prev_block_hash(block) do
-    block |> Map.get(:block_header) |> Map.get(:previous_block_hash) |> Base.encode16()
+    block |> Map.get(:block_header) |> Map.get(:previous_block_hash) |> Base.encode16(case: :lower)
   end
 
   def get_merkle_root(block) do
-    block |> Map.get(:block_header) |> Map.get(:merkle_root) |> Base.encode16() 
+    block |> Map.get(:block_header) |> Map.get(:merkle_root) |> Base.encode16(case: :lower) 
   end
 
   def get_transactions_html_string(transactions) when transactions == [] do
@@ -49,14 +49,39 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
 
   def get_transactions_html_string(transactions) do
     [head | tail] = transactions
-    "<tr> <td> " <> Base.encode16(head.txid) <> "</td> </tr>" <> get_transactions_html_string(tail)
+    Base.encode16(head.txid)  <> get_transactions_html_string(tail)
 
   end
 
   def get_transactions_html_string_from_block(block) do
     string = get_transactions_html_string(block.transactions)
-    IO.puts string
-    string
+    IO.inspect string
   end
 
+  def get_txid(transaction) do
+    (transaction.txid |> Base.encode16(case: :lower) |> String.slice(0..40)) <> "..."
+  end
+
+  def get_sender_pub_key(transaction) do
+    (transaction.full_public_key |> Base.encode16(case: :lower) |> String.slice(0..40)) <> "..."
+  end
+
+  def get_transaction_output(transaction) do 
+    (transaction.transaction_output.pub_key_script |> Base.encode16(case: :lower) |> String.slice(0..40)) 
+    <> "... => " 
+    <> (transaction.transaction_output.amount |> Integer.to_string())
+  end
+
+  def get_transaction_got_back_output(transaction) do 
+    unless(transaction.transaction_output.got_back_amount == nil) do
+      (transaction.transaction_output.sender_pub_key_script |> Base.encode16(case: :lower) |> String.slice(0..40)) 
+      <> "... => " 
+      <> (transaction.transaction_output.got_back_amount |> Integer.to_string())
+    else
+      ""  
+    end
+    
+  end
+  
+  
 end

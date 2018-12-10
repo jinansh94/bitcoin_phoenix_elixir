@@ -550,8 +550,18 @@ defmodule MintProcessor.MintGenServer do
     {:reply, bn, state}
   end
 
-  def handle_call({:get_transaction, txn_hash}, _from, state) do
-    {:reply, state.mint_tx_map.get(txn_hash), state}
+  def handle_call({:get_transaction, txid}, _from, state) do
+    txn = Map.get(state.mint_tx_map,txid)
+    type = 
+    cond do
+      txn == nil -> :not_found
+      txid in state.unverified_transaction -> :unverified
+      txid in state.unused_transaction -> :unused
+      true -> :spent
+
+    end
+
+    {:reply, {type, txn}, state}
   end
 
 

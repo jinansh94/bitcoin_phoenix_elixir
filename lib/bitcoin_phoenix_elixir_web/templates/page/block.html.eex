@@ -71,13 +71,7 @@
     </table>
     <h3> Transactions </h3>
     <table> 
-    <script> 
-        var htmlString = <%= b = @conn.params["block"]
-                    get_transactions_html_string_from_block(b)
-                %>;
-        Console.log(htmlString);
-        return htmlString;
-    </script>
+
     </table>
 
 </section>

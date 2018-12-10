@@ -1,0 +1,51 @@
+<section >
+    <h1>
+        <%= t = @conn.params["transaction"]
+            block_number = get_txid(t)
+            "Transaction ID: " <> Integer.to_string(block_number)
+        %>
+    </h1>
+    <table style="width:100% align:left">
+        <tr>
+            <th> Summary </th>
+        </tr>
+        <tr>
+            <td> Input Transactions </td>
+            <p> DO THE SAME JAVASCRIPT CODE FORMAT FOR TRANSACTION INPUTS </p>
+        </tr>
+        <tr>
+            <td> Sender Public Key </td>
+            <td>  
+                <%= t = @conn.params["transaction"]
+                    get_sender_pub_key(t)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Transaction Output </td>
+            <td>  
+                <%= t = @conn.params["transaction"]
+                    get_transaction_output(t)
+                %>
+                <br>
+                <%= t = @conn.params["transaction"]
+                    get_transaction_got_back_output(t)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Type </td>
+            <td style="font">  
+                <%= t = @conn.params["type"]
+                    cond do
+                        t == :unspent -> "Transaction verified, but unspent"
+                        t == :unverified -> "Transaction yet to be verified"
+                        t -- :spent -> "Transaction spent"
+                    end
+                %>
+        </td>
+        </tr>
+        
+    </table>
+    
+</section>
