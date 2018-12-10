@@ -131,5 +131,10 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
     block.transactions |> generate_transaction_html()
   end
 
+  def get_prev_block_link(block) do
+    block_no = Map.get(block, :block_number)
+    "http://localhost:4000/block?block=" <> Integer.to_string((block_no-1))
+  end
+
 
 end

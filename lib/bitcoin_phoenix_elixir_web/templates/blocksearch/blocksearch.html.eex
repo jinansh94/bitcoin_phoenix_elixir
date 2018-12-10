@@ -36,7 +36,6 @@
         <script>
             document.getElementById("block_search_btn").onclick = function () {
             var url_block_number = document.getElementById("block_search_input").value;
-            console.log(`BLock_number ${url_block_number}`);
             location.href = `http://localhost:4000/block?block=${url_block_number}`;
             };
         </script>  

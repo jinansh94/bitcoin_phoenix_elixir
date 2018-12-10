@@ -2,7 +2,7 @@
     <h1>
         <%= b = @conn.params["block"]
             block_number = get_block_number(b)
-            "Block#" <> Integer.to_string(block_number)
+            "Block #" <> Integer.to_string(block_number)
         %>
     </h1>
     <table style="width: 100%">
@@ -52,12 +52,13 @@
                 %>
         </td>
         </tr>
-        <tr>
+        <tr id="prev_block_hash">
             <td> Previous Block Hash </td>
-            <td>  
+            <td> <a href=<%= get_prev_block_link(@conn.params["block"]) %>>
+
                 <%= b = @conn.params["block"]
                     get_prev_block_hash(b)
-                %>
+                %> </a>
         </td>
         </tr>
         <tr>
