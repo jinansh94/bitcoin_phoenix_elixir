@@ -571,11 +571,11 @@ defmodule MintProcessor.MintGenServer do
   end
 
   def handle_call(:get_unspent_transaction_count, _from, state) do
-    {:reply, length(state.unused_transaction), state}
+    {:reply, length(state.unused_transaction |> Map.keys()), state}
   end
 
   def handle_call(:get_unverified_transaction_count, _from, state) do
-    {:reply, length(state.unverified_transaction), state}
+    {:reply, length(state.unverified_transaction |> Map.keys()), state}
   end
 
   def handle_call(:get_total_transaction_count, _from, state) do

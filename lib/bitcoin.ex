@@ -59,11 +59,11 @@ defmodule Bitcoin do
 
   def inin() do
     {_, mint_pid} = MintProcessor.MintSupervisor.start_child()
-    User.BitcoinSupervisor.start_child(10, mint_pid, 10, %{})
+    User.BitcoinSupervisor.start_child(3, mint_pid, 3, %{})
     spec_list = DynamicSupervisor.which_children(:user_super)
 
     start_node_mining(spec_list, mint_pid)
-    spawn(Bitcoin, :runner, [spec_list, mint_pid])
+    #spawn(Bitcoin, :runner, [spec_list, mint_pid])
 
 
 
@@ -85,7 +85,7 @@ defmodule Bitcoin do
     #keep_requesting(child_pid, 25, spec_list, 100)
     IO.puts("sending someone")
     send_someone(child_pid, 3, spec_list, 100)
-    
+
   end
-  
+
 end

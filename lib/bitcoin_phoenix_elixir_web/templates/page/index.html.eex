@@ -1,7 +1,95 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
 <section class="phx-hero">
   <h1><%= gettext "Welcome to %{name}!", name: "Bitcoin" %></h1>
   <p>A productive web framework thatBitcoin uses peer-to-peer technology to operate with no central authority or banks; managing transactions and the issuing of bitcoins is carried out collectively by the network. Bitcoin is open-source; its design is public, nobody owns or controls Bitcoin and everyone can take part. Through many of its unique properties, Bitcoin allows exciting uses that could not be covered by any previous payment system.
   </p>
 </section>
+
+
+<canvas id="unspent_tx" width="400" height="400"></canvas>
+<script>
+let dat_graph = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_unspent_tx()) 
+                  raw(a) %>
+var ctx = document.getElementById("unspent_tx").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["","","","","","","","","","","","","","","","","","","",""],
+        datasets: [{
+            label: 'Unsepnt Transactions',
+            data: dat_graph,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+<canvas id="unverified_tx" width="400" height="400"></canvas>
+<script>
+let dat_graph = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_unspent_tx()) 
+                  raw(a) %>
+var ctx = document.getElementById("unverified_tx").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["","","","","","","","","","","","","","","","","","","",""],
+        datasets: [{
+            label: 'Unsepnt Transactions',
+            data: dat_graph,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
 
 
