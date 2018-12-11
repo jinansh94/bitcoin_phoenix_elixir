@@ -53,6 +53,7 @@
 						<th class="column100 column2" data-column="column2">Height</th>
 						<th class="column100 column3" data-column="column3">Birth</th>
 						<th class="column100 column4" data-column="column4">Transactions</th>
+						<th class="column100 column4" data-column="column4">Mined By</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,30 +61,35 @@
 						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_1"])%></td>
 						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_1"])%></td>
 						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_miner(@conn.params["list_blocks_1"])%></td>
 					</tr>
 
 					<tr class="row100">
 						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_2"])%></td>
 						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_2"])%></td>
-						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_2"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_miner(@conn.params["list_blocks_2"])%></td>
 					</tr>
 
 					<tr class="row100">
 						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_3"])%></td>
 						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_3"])%></td>
-						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_3"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_miner(@conn.params["list_blocks_3"])%></td>
 					</tr>
 
 					<tr class="row100">
 						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_4"])%></td>
 						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_4"])%></td>
-						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_4"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_miner(@conn.params["list_blocks_4"])%></td>
 					</tr>
 
 					<tr class="row100">
 						<td class="column100 column1" data-column="column1"><%=block_height(@conn.params["list_blocks_5"])%></td>
 						<td class="column100 column2" data-column="column2"><%=get_age(@conn.params["list_blocks_5"])%></td>
-						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_1"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_transactions(@conn.params["list_blocks_5"])%></td>
+						<td class="column100 column3" data-column="column3"><%=get_miner(@conn.params["list_blocks_5"])%></td>
 					</tr>
 
 				</tbody>

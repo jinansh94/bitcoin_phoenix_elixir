@@ -570,26 +570,42 @@ defmodule MintProcessor.MintGenServer do
     {:reply, {type, txn}, state}
   end
 
-  def handle_call(:get_unspent_transaction_count, _from, state) do
-    {:reply, length(state.unused_transaction), state}
+  def handle_call(:get_graph_data, _from, state) do
+    unspent_txns = state.unused_transaction |> Map.keys() |> length()
+    unverified_txns = state.unverified_transaction |> Map.keys |> length()
+    total_txns = state.mint_tx_map |> Map.keys() |> length()
+    k = state.miners |> Map.keys()
+    v = state.miners |> Map.values()
+    top_ten_guys = Enum.zip(k,v) |> Enum.sort(fn {_k1,v1}, {_k2,v2} -> v1 > v2 end) |> Enum.take(10)
+    bitcoin_count = state.mint_blockchain.latest_block_number * 50
+    [latest_block| _] = state.mint_blockchain.block_map |> Map.get(state.mint_blockchain.latest_block_number)
+    complexity_latest = latest_block.complexity 
+    
+    ret_val = {unspent_txns, unverified_txns, total_txns, top_ten_guys, bitcoin_count, complexity_latest}
+    
+    {:reply, ret_val, state}
   end
 
-  def handle_call(:get_unverified_transaction_count, _from, state) do
-    {:reply, length(state.unverified_transaction), state}
+  def handle_call(:get_unspent_transaction_count_old, _from, state) do
+    {:reply, state.unused_transaction |> Map.keys() |> length(), state}
   end
 
-  def handle_call(:get_total_transaction_count, _from, state) do
+  def handle_call(:get_unverified_transaction_count_old, _from, state) do
+    {:reply, state.unverified_transaction |> Map.keys |> length(), state}
+  end
+
+  def handle_call(:get_total_transaction_count_old, _from, state) do
     {:reply, state.mint_tx_map |> Map.keys() |> length(), state}
   end
 
-  def handle_call(:get_top_ten_miners, _from, state) do
+  def handle_call(:get_top_ten_miners_old, _from, state) do
     k = state.miners |> Map.keys()
     v = state.miners |> Map.values()
     top_ten = Enum.zip(k,v) |> Enum.sort(fn {_k1,v1}, {_k2,v2} -> v1 > v2 end) |> Enum.take(10)
     {:reply, top_ten, state}
   end
 
-  def handle_call(:number_of_bitcoins, _from, state) do
+  def handle_call(:number_of_bitcoins_old, _from, state) do
     {:reply, state.mint_blockchain.latest_block_number * 50, state}
   end
 
@@ -598,6 +614,7 @@ defmodule MintProcessor.MintGenServer do
     []
   end
 
+  
   defp get_blocks(chain, block_num, count) do
     [Map.get(chain,block_num) | get_blocks(chain, block_num-1, count-1)]
   end
