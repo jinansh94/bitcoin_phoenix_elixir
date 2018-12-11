@@ -222,7 +222,7 @@ defmodule User.BitcoinUser do
 
   defp delete_unwanted_branches(chain_map, last_block_number) do
     if(last_block_number < 6) do
-      chain_map
+      {chain_map, []}
     else
       [latest_block | _rest] = chain_map |> Map.get(last_block_number)
 
@@ -262,7 +262,16 @@ defmodule User.BitcoinUser do
             x.block_header.block_hash === prev4_block.block_header.previous_block_hash
           end)
 
-        chain_map |> Map.put(last_block_number - 5, [prev5_block])
+          rejected_blocks =
+          chain_map
+          |> Map.get(last_block_number - 5, [])
+          |> Enum.reject(fn x ->
+            x.block_header.block_hash === prev4_block.block_header.previous_block_hash
+          end)
+
+
+        chain_map = chain_map |> Map.put(last_block_number - 5, [prev5_block])
+        {chain_map, rejected_blocks}
       rescue
         _e in MatchError ->
           #        IO.puts("Latest Block")
@@ -278,7 +287,7 @@ defmodule User.BitcoinUser do
           #        IO.puts("Block no -5")
           #        IO.inspect( Map.get(chain_map,last_block_number - 5, []))
        #   IO.puts("problem in branch deletion.")
-          chain_map
+          {chain_map, []}
       end
     end
   end
@@ -286,26 +295,27 @@ defmodule User.BitcoinUser do
   defp add_block_to_chain(chain, block) do
     cond do
       block.block_number < chain.latest_block_number - 5 ->
-        chain
+        {chain, []}
 
       block.block_number <= chain.latest_block_number ->
         updated_map = chain.block_map |> Map.update(block.block_number, [block], &[block | &1])
 
-        chain |> Map.put(:block_map, updated_map)
+        chain = chain |> Map.put(:block_map, updated_map)
+        {chain, []}
 
       block.block_number == chain.latest_block_number + 1 ->
         updated_map = chain.block_map |> Map.update(block.block_number, [block], &[block | &1])
-        updated_map = delete_unwanted_branches(updated_map, block.block_number)
+        {updated_map, rejected_blocks} = delete_unwanted_branches(updated_map, block.block_number)
 
         chain =
           chain
           |> Map.put(:block_map, updated_map)
           |> Map.put(:latest_block_number, block.block_number)
 
-        chain
+        {chain, rejected_blocks}
 
       true ->
-        chain
+        {chain,[]}
     end
   end
 
@@ -341,6 +351,14 @@ defmodule User.BitcoinUser do
     else
       false
     end
+  end
+
+  def get_rejected_txns(tx_list, rejected_blocks) when rejected_blocks == [] do
+    tx_list
+  end
+
+  def get_rejected_txns(tx_list, rejected_blocks) do
+    Enum.reject(tx_list, fn x -> x.txid == (rejected_blocks |> hd() |> Map.get(:transactions) |> hd() |> Map.get(:txid)) end) |> get_rejected_txns(tl(rejected_blocks))
   end
 
   def handle_cast({:send_hash, pid}, state) do
@@ -566,7 +584,7 @@ defmodule User.BitcoinUser do
           new_state =
             if(valid == :valid and longest_chain <= block.block_number) do
               broadcast_block(block, state.neighbors, pid, m_pid)
-              new_block_chain = add_block_to_chain(state.block_chain, block)
+              {new_block_chain, rejected_blocks} = add_block_to_chain(state.block_chain, block)
               updated_incoming_txns = update_incoming_txns(state.incoming_txns, block)
 
               new_pid =
@@ -598,10 +616,13 @@ defmodule User.BitcoinUser do
                   nil
                 end
 
+              unused_tx_list = get_rejected_txns(state.wallet.unused_transactions, rejected_blocks)
+              new_wallet = state.wallet |> Map.put(:unused_transactions, unused_tx_list)
               state
               |> Map.put(:block_chain, new_block_chain)
               |> Map.put(:incoming_txns, updated_incoming_txns)
               |> Map.put(:spawned_process, new_pid)
+              |> Map.put(:wallet, new_wallet)
             else
               state
             end
@@ -633,9 +654,11 @@ defmodule User.BitcoinUser do
     {new_state, new_block_number} =
       if(longest_chain <= block.block_number and valid == :valid) do
         broadcast_block(block, state.neighbors, self(), m_pid)
-        new_chain = add_block_to_chain(state.block_chain, block)
+        {new_chain, rejected_blocks} = add_block_to_chain(state.block_chain, block)
         before_updating = Enum.count(state.incoming_txns)
         updated_txns = update_incoming_txns(state.incoming_txns, block)
+
+        unused_tx_list = get_rejected_txns(state.wallet.unused_transactions, rejected_blocks)
 
         # TODO: Spawn a process to calculate the block
         # TODO: update the spawned_pid
@@ -650,7 +673,7 @@ defmodule User.BitcoinUser do
          )
 
         #        IO.inspect(block.block_header.block_hash)
-        new_wallet = state.wallet
+        new_wallet = state.wallet |> Map.put(:unused_transactions, unused_tx_list)
 
         new_wallet =
           new_wallet
@@ -689,7 +712,7 @@ defmodule User.BitcoinUser do
           m_pid
         ]
       )
-
+      
     new_state =
       new_state
       |> Map.put(:spawned_process, new_pid)

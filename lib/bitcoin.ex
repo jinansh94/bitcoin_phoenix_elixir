@@ -30,6 +30,16 @@ defmodule Bitcoin do
     end
   end
 
+  
+  def wait_indef4() do
+    receive do
+      :hello -> nil
+    after
+      15_000 ->
+        :ok
+    end
+  end
+
   def keep_requesting(_pid, num, _list, _x) when num == 0 do
     nil
   end
@@ -76,7 +86,7 @@ defmodule Bitcoin do
     keep_requesting(child_pid, 10, spec_list, 100)
     wait_indef2()
     IO.puts "started requesting2"
-    keep_requesting(child_pid, 20, spec_list, 100)
+    keep_requesting(child_pid, 15, spec_list, 100)
     wait_indef2()
     child_pid2 = User.BitcoinSupervisor.add_new_node(mint_pid)
     child_pid3 = User.BitcoinSupervisor.add_new_node(mint_pid)
@@ -86,20 +96,26 @@ defmodule Bitcoin do
     keep_requesting(child_pid, 5, spec_list, 100)
     keep_requesting(child_pid2, 10, spec_list, 30)
     keep_requesting(child_pid3, 10, spec_list, 30)
+    wait_indef3()
     keep_requesting(child_pid4, 10, spec_list, 30)
     keep_requesting(child_pid5, 10, spec_list, 30)
     wait_indef3()
     IO.puts "started requesting4"
     keep_requesting(child_pid, 20, spec_list, 100)
+    wait_indef4()
     keep_requesting(child_pid2, 20, spec_list, 130)
+    wait_indef4()
     keep_requesting(child_pid3, 20, spec_list, 130)
+    wait_indef4()
     keep_requesting(child_pid4, 20, spec_list, 130)
+    wait_indef4()
     keep_requesting(child_pid5, 20, spec_list, 130)
     IO.puts("sending someone")
-
+    wait_indef4()
     send_someone(child_pid, 10, spec_list, 100)
     send_someone(child_pid2, 5, spec_list, 100)
     send_someone(child_pid3, 5, spec_list, 100)
+    wait_indef4()
     send_someone(child_pid4, 5, spec_list, 100)
     send_someone(child_pid5, 5, spec_list, 100)
     
