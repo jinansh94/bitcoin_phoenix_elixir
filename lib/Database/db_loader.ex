@@ -12,7 +12,7 @@ defmodule BitcoinPhoenixElixir.DBLoader do
 
         Repo.insert(%Unspent_tx{total_us: us_txs})
 
-        Repo.insert(%Unverified_tx{total_uv: uv_txs})
+        #Repo.insert(%Unverified_tx{total_uv: uv_txs})
 
         # Repo.insert(%Unspent_tx{total_tx: total_txs})
 

@@ -12,5 +12,7 @@ defmodule BitcoinPhoenixElixirWeb.BlocksearchView do
   def get_transactions([block | _]) do
     :erlang.length(block.transactions)
   end
-
+  def get_miner([block | _]) do
+    block.miner
+  end
 end

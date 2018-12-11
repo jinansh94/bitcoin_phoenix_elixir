@@ -48,6 +48,14 @@ defmodule BitcoinPhoenixElixirWeb.PageView do
     block |> Map.get(:block_header) |> Map.get(:merkle_root) |> Base.encode16(case: :lower)
   end
 
+  def get_miner_details(block) do
+    block.miner
+  end
+
+  def get_block_complexity(block) do
+    block.complexity
+  end
+
   def get_transactions_html_string(transactions) when transactions == [] do
     ""
   end

@@ -75,16 +75,33 @@ defmodule Bitcoin do
     IO.puts "started requesting"
     keep_requesting(child_pid, 10, spec_list, 100)
     wait_indef2()
-    #IO.puts "started requesting2"
-    #keep_requesting(child_pid, 20, spec_list, 100)
-    #wait_indef2()
-    #IO.puts "started requesting3"
-    #keep_requesting(child_pid, 20, spec_list, 100)
-    #wait_indef2()
-    #IO.puts "started requesting4"
-    #keep_requesting(child_pid, 25, spec_list, 100)
+    IO.puts "started requesting2"
+    keep_requesting(child_pid, 20, spec_list, 100)
+    wait_indef2()
+    child_pid2 = User.BitcoinSupervisor.add_new_node(mint_pid)
+    child_pid3 = User.BitcoinSupervisor.add_new_node(mint_pid)
+    child_pid4 = User.BitcoinSupervisor.add_new_node(mint_pid)
+    child_pid5 = User.BitcoinSupervisor.add_new_node(mint_pid)
+    IO.puts "started requesting3"
+    keep_requesting(child_pid, 5, spec_list, 100)
+    keep_requesting(child_pid2, 10, spec_list, 30)
+    keep_requesting(child_pid3, 10, spec_list, 30)
+    keep_requesting(child_pid4, 10, spec_list, 30)
+    keep_requesting(child_pid5, 10, spec_list, 30)
+    wait_indef3()
+    IO.puts "started requesting4"
+    keep_requesting(child_pid, 20, spec_list, 100)
+    keep_requesting(child_pid2, 20, spec_list, 130)
+    keep_requesting(child_pid3, 20, spec_list, 130)
+    keep_requesting(child_pid4, 20, spec_list, 130)
+    keep_requesting(child_pid5, 20, spec_list, 130)
     IO.puts("sending someone")
-    send_someone(child_pid, 3, spec_list, 100)
+
+    send_someone(child_pid, 10, spec_list, 100)
+    send_someone(child_pid2, 5, spec_list, 100)
+    send_someone(child_pid3, 5, spec_list, 100)
+    send_someone(child_pid4, 5, spec_list, 100)
+    send_someone(child_pid5, 5, spec_list, 100)
 
   end
 

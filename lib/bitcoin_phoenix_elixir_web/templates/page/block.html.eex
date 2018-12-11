@@ -10,6 +10,15 @@
             <th> Summary </th>
         </tr>
         <tr>
+            <td> Mined by </td>
+            <td> 
+                <%= b = @conn.params["block"]
+                    val = get_miner_details(b)
+                    Integer.to_string(val)
+                %>
+        </td>
+        </tr>
+        <tr>
             <td> Number of Transactions </td>
             <td> 
                 <%= b = @conn.params["block"]
@@ -40,6 +49,15 @@
             <td>  
                 <%= b = @conn.params["block"]
                     val = get_block_reward(b)
+                    Integer.to_string(val)
+                %>
+        </td>
+        </tr>
+        <tr>
+            <td> Complexity </td>
+            <td> 
+                <%= b = @conn.params["block"]
+                    val = get_block_complexity(b)
                     Integer.to_string(val)
                 %>
         </td>
