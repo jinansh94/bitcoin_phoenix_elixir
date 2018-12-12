@@ -8,7 +8,7 @@
 
 <canvas id="unspent_tx" width="400" height="400"></canvas>
 <script>
-let dat_graph = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_unspent_tx()) 
+let dat_graph_unspent_tx = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_unspent_tx()) 
                   raw(a) %>
 var ctx = document.getElementById("unspent_tx").getContext('2d');
 var myChart = new Chart(ctx, {
@@ -17,7 +17,7 @@ var myChart = new Chart(ctx, {
         labels: ["","","","","","","","","","","","","","","","","","","",""],
         datasets: [{
             label: 'Unsepnt Transactions',
-            data: dat_graph,
+            data: dat_graph_unspent_tx,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -49,18 +49,20 @@ var myChart = new Chart(ctx, {
 });
 </script>
 
-<canvas id="unverified_tx" width="400" height="400"></canvas>
+<canvas id="top_miners" width="400" height="400"></canvas>
 <script>
-let dat_graph = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_unverified_tx()) 
+let dat_graph_top_miners = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_top_miners_data()) 
                   raw(a) %>
-var ctx = document.getElementById("unverified_tx").getContext('2d');
+let label_graph_top_miners = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_top_miners()) 
+                  raw(a) %>
+var ctx = document.getElementById("top_miners").getContext('2d');
 var myChart = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
-        labels: ["","","","","","","","","","","","","","","","","","","",""],
+        labels: label_graph_top_miners,
         datasets: [{
             label: 'Unsepnt Transactions',
-            data: dat_graph,
+            data: dat_graph_top_miners,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -94,7 +96,7 @@ var myChart = new Chart(ctx, {
 
 <canvas id="total_tx" width="400" height="400"></canvas>
 <script>
-let dat_graph = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_total_tx()) 
+let dat_graph_total_tx = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_total_tx()) 
                   raw(a) %>
 var ctx = document.getElementById("total_tx").getContext('2d');
 var myChart = new Chart(ctx, {
@@ -103,7 +105,137 @@ var myChart = new Chart(ctx, {
         labels: ["","","","","","","","","","","","","","","","","","","",""],
         datasets: [{
             label: 'Unsepnt Transactions',
-            data: dat_graph,
+            data: dat_graph_total_tx,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+<canvas id="total_bitcoins" width="400" height="400"></canvas>
+<script>
+let dat_graph_total_bitcoins = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_total_bitcoins()) 
+                  raw(a) %>
+var ctx = document.getElementById("total_bitcoins").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["","","","","","","","","","","","","","","","","","","",""],
+        datasets: [{
+            label: 'Unsepnt Transactions',
+            data: dat_graph_total_bitcoins,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+<canvas id="complexity" width="400" height="400"></canvas>
+<script>
+let dat_graph_complexity = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_complexity_blocks()) 
+                  raw(a) %>
+var ctx = document.getElementById("complexity").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["","","","","","","","","","","","","","","","","","","",""],
+        datasets: [{
+            label: 'Unsepnt Transactions',
+            data: dat_graph_complexity,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+
+<canvas id="unverified_tx" width="400" height="400"></canvas>
+<script>
+let dat_graph_unverified_tx = <%= {:ok, a} = Poison.encode(BitcoinPhoenixElixir.DBRetriever.get_unverified_tx()) 
+                  raw(a) %>
+var ctx = document.getElementById("unverified_tx").getContext('2d');
+var myChart_1 = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["","","","","","","","","","","","","","","","","","","",""],
+        datasets: [{
+            label: 'Unsepnt Transactions',
+            data: dat_graph_unverified_tx,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
