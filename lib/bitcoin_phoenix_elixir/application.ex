@@ -23,6 +23,14 @@ defmodule BitcoinPhoenixElixir.Application do
 
     opts = [strategy: :one_for_one, name: BitcoinPhoenixElixir.Supervisor]
     x = Supervisor.start_link(children, opts)
+
+    Ecto.Adapters.SQL.query(BitcoinPhoenixElixir.Repo, "DELETE from unverified_tx", [])
+    Ecto.Adapters.SQL.query(BitcoinPhoenixElixir.Repo, "DELETE from unspent_tx", [])
+    Ecto.Adapters.SQL.query(BitcoinPhoenixElixir.Repo, "DELETE from complexity_of_blocks", [])
+    Ecto.Adapters.SQL.query(BitcoinPhoenixElixir.Repo, "DELETE from top_miners", [])
+    Ecto.Adapters.SQL.query(BitcoinPhoenixElixir.Repo, "DELETE from total_no_bitcoins", [])
+    Ecto.Adapters.SQL.query(BitcoinPhoenixElixir.Repo, "DELETE from total_no_tx", [])
+
     Bitcoin.inin()
     spawn(BitcoinPhoenixElixir.DBLoader, :insertIntoDb, [])
     x
