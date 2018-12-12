@@ -579,10 +579,10 @@ defmodule MintProcessor.MintGenServer do
     top_ten_guys = Enum.zip(k,v) |> Enum.sort(fn {_k1,v1}, {_k2,v2} -> v1 > v2 end) |> Enum.take(10)
     bitcoin_count = state.mint_blockchain.latest_block_number * 50
     [latest_block| _] = state.mint_blockchain.block_map |> Map.get(state.mint_blockchain.latest_block_number)
-    complexity_latest = latest_block.complexity 
-    
+    complexity_latest = latest_block.complexity
+
     ret_val = {unspent_txns, unverified_txns, total_txns, top_ten_guys, bitcoin_count, complexity_latest}
-    
+
     {:reply, ret_val, state}
   end
 
@@ -614,7 +614,7 @@ defmodule MintProcessor.MintGenServer do
     []
   end
 
-  
+
   defp get_blocks(chain, block_num, count) do
     [Map.get(chain,block_num) | get_blocks(chain, block_num-1, count-1)]
   end

@@ -16,14 +16,15 @@ defmodule BitcoinPhoenixElixir.Application do
       # {BitcoinPhoenixElixir.Worker, arg},
       %{id: :mint_super, restart: :temporary, start: {MintProcessor.MintSupervisor, :start_link, [nil]}},
       %{id: :user_super, restart: :temporary, start: {User.BitcoinSupervisor, :start_link, [nil]}}
-      
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
+
     opts = [strategy: :one_for_one, name: BitcoinPhoenixElixir.Supervisor]
     x = Supervisor.start_link(children, opts)
     Bitcoin.inin()
+    spawn(BitcoinPhoenixElixir.DBLoader, :insertIntoDb, [])
     x
   end
 

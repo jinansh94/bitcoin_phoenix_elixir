@@ -29,9 +29,9 @@
     <section style="padding-top: 50px;padding-bottom: 50px">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <button id="block_search_btn" class="btn btn-outline-secondary" type="button">Button</button>
+                <button id="block_search_btn"  class="btn btn-outline-secondary" type="button">Search</button>
             </div>
-            <input id="block_search_input" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+            <input id="block_search_input" style="border-style: line" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
         </div>
         <script>
             document.getElementById("block_search_btn").onclick = function () {
